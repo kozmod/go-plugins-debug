@@ -1,14 +1,14 @@
 FROM golang:1.17.5-alpine3.15 AS build
-ENV CGO_ENABLED=1
+ENV CGO_ENABLED=0
 ENV GO111MODULE="on"
 
-RUN apk update && apk add --no-cache musl-dev gcc libc-dev
+RUN apk update && apk add --no-cache musl-dev gcc libc-dev bash
 
 WORKDIR /test_plugins
 ADD . /test_plugins
 RUN go build -gcflags "all=-N -l" -o out/main .
-RUN go build -o out/plug1.so -gcflags="all=-N -l" -buildmode=plugin ./plugin/one/plugin1.go
-RUN go build -o out/plug2.so -gcflags="all=-N -l" -buildmode=plugin ./plugin/two/plugin2.go
+RUN go build -o out/plug1.so -gcflags="all=-N -l" -ldflags "-compressdwarf=false" -buildmode=plugin ./plugin/one/plugin1.go
+RUN go build -o out/plug2.so -gcflags="all=-N -l" -ldflags "-compressdwarf=false" -buildmode=plugin ./plugin/two/plugin2.go
 
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
