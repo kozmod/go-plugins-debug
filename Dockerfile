@@ -7,8 +7,8 @@ RUN apk update && apk add --no-cache musl-dev gcc libc-dev bash
 WORKDIR /test_plugins
 ADD . /test_plugins
 RUN go build -gcflags "all=-N -l" -o out/main .
-RUN go build -o out/plug1.so -gcflags="all=-N -l" -ldflags "-compressdwarf=false" -buildmode=plugin ./plugin/one/plugin1.go
-RUN go build -o out/plug2.so -gcflags="all=-N -l" -ldflags "-compressdwarf=false" -buildmode=plugin ./plugin/two/plugin2.go
+RUN go build -o out/plug1.so -gcflags="all=-N -l" -buildmode=plugin ./plugin/one/plugin1.go
+RUN go build -o out/plug2.so -gcflags="all=-N -l" -buildmode=plugin ./plugin/two/plugin2.go
 
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 
