@@ -1,0 +1,25 @@
+version: '3.5'
+
+services:
+  test:
+    container_name: test
+    image: test:0.0.4
+    build: .
+    entrypoint:
+      - "/bin/sh"
+      - "-ecx"
+      - >
+        /dlv --listen=:40000 --headless=true --api-version=2 exec /main -- 2
+    networks:
+      - test-plugin-network
+    expose:
+      - "8080"
+      - "40000"
+    ports:
+      - "40000:40000"
+      - "8080:8080"
+
+networks:
+  service-local:
+  test-plugin-network:
+    name: one-test-plugin-network
