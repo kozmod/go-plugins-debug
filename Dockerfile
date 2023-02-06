@@ -1,5 +1,5 @@
 FROM golang:1.19.1-alpine3.15 AS build
-ENV CGO_ENABLED=0
+ENV CGO_ENABLED=1
 ENV GO111MODULE="on"
 
 RUN apk update && apk add --no-cache musl-dev gcc libc-dev bash

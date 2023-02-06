@@ -1,5 +1,8 @@
 TEG ?=test:v0.0.1
 
+run:
+	dlv --listen=:40000 --headless=true --api-version=2 exec ./out/main -- 2
+
 clean:
 	rm -rf out
 

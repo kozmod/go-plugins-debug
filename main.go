@@ -1,17 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"plugin"
 )
 
 func main() {
 
-	plugNum := "english"
+	plugNum := "1"
 	if len(os.Args) == 2 {
 		plugNum = os.Args[1]
 	}
@@ -36,6 +38,16 @@ func main() {
 		log.Println(err)
 		os.Exit(1)
 	}
+
+	cmd := exec.Command("ls", "-l")
+	var out bytes.Buffer
+	cmd.Stdout = &out
+	err = cmd.Run()
+	if err != nil {
+		log.Fatal("cmd:", err)
+	}
+	log.Println(out.String())
+
 	path := filepath.Join(cwd, mod)
 	if _, err := os.Stat(path); os.IsNotExist(err) {
 		log.Println(mod, err)
