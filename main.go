@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -21,10 +20,10 @@ func main() {
 	var f string
 	switch plugNum {
 	case "1":
-		mod = "plug1.so"
+		mod = "out/plug1.so"
 		f = "GreetUniverse"
 	case "2":
-		mod = "plug2.so"
+		mod = "out/plug2.so"
 		f = "GreetWorld"
 	default:
 		log.Println("plugin did not chose")
@@ -72,17 +71,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	mux := http.NewServeMux()
-	mux.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
-		res := greeter()
-		_, err := writer.Write([]byte(res))
-		if err != nil {
-			log.Fatal(err)
-		}
-	})
-
-	err = http.ListenAndServe(":8080", mux)
-	if err != nil {
-		log.Fatal(err)
-	}
+	res := greeter()
+	log.Println("greeter: ", res)
 }
